@@ -1,26 +1,33 @@
 const express = require('express');
-//const disk = require('diskusage');
-//const path = require('path');
+const { exec } = require('child_process');
 const app = express();
 
-
-const state_counter = 0;
-app.all('/', async (req, res) => {
+app.all('/', (req, res) => {
     console.log("Just got a request!");
 
-    try {
-        state_counter = state_counter +1;
-        // Defina o caminho para a unidade de disco. Use "/" no Linux/Mac e "C:\\" no Windows.
-    
+    exec('df -k --output=avail /', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Exec error: ${error.message}`);
+            return res.status(500).send("Could not retrieve disk usage information.");
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).send("Error retrieving disk usage.");
+        }
 
-        // Crie uma resposta JSON com as informações do disco
-        res.json({
-            hello:`Hello ${state_counter}`,
-        });
-    } catch (error) {
-        console.error("Error retrieving disk usage:", error);
-        res.status(500).send("Could not retrieve disk usage information.");
-    }
+        try {
+            // Pega apenas a segunda linha com o valor disponível em KB
+            const availableKB = parseInt(stdout.trim().split('\n')[1], 10);
+            const availableGB = (availableKB / (1024 ** 2)).toFixed(2); // Convertendo KB para GB
+
+            res.json({
+                availableDiskSpace: `${availableGB} GB`
+            });
+        } catch (parseError) {
+            console.error("Parse error:", parseError);
+            res.status(500).send("Error parsing disk usage information.");
+        }
+    });
 });
 
 app.listen(process.env.PORT || 3000, () => {
