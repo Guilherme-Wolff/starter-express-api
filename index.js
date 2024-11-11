@@ -1,5 +1,5 @@
 const express = require('express');
-const disk = require('diskusage');
+//const disk = require('diskusage');
 //const path = require('path');
 const app = express();
 
