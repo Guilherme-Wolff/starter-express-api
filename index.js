@@ -21,7 +21,7 @@ app.all('/', async (req, res) => {
         
 
         // Crie uma resposta JSON com as informações do disco
-        res.json({
+        res.send({
             totalDiskSpace: `${totalGB} GB`,
             freeDiskSpace: `${freeGB} GB`,
             availableDiskSpace: `${availableGB} GB`
