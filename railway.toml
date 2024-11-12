@@ -4,14 +4,14 @@ builder = "NIXPACKS"
 nixpacksPlan = {
     phases = {
         install_deps = {
-            cmds = [
-                "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp",
-                "chmod a+rx ~/.local/bin/yt-dlp"
-            ],
             nixPkgs = [
                 "ffmpeg",
                 "curl"
-            ] 
+            ],
+            cmds = [
+                "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp",
+                "chmod a+rx ~/.local/bin/yt-dlp"
+            ]
         }
     }
 }
