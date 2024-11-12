@@ -10,8 +10,8 @@ nixpacksPlan = {
             ],
             cmds = [
                 "sudo apt update",
-                "sudo apt install -y python3-pip",
-                "sudo pip3 install -U yt-dlp"
+                "sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp",
+                "sudo chmod a+rx /usr/local/bin/yt-dlp"
             ]
         }
     }
