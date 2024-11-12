@@ -6,6 +6,7 @@ nixpacksPlan = {
         install_deps = {
             cmds = [
                 "sudo apt-get update",
+                "sudo apt-get upgrade -y",
                 "sudo apt-get install -y ffmpeg yt-dlp curl"
             ],
             aptPkgs = [
