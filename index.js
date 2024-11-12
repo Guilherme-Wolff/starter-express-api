@@ -41,14 +41,16 @@ app.all('/', async (req, res) => {
     try {
         // Executa todos os comandos assíncronos
         const ffmpegVersion = await getVersion('ffmpeg', ['-version']);
-        const ytDlpVersion = await getVersion('yt-dlp', ['--version']);
+        const ytDlpVersion = await getVersion('/usr/local/bin/yt-dlp', ['--version']);
         const curlVersion = await getVersion('curl', ['--version']);
+        const ytpath = await getVersion('which', ['yt-dlp']);
 
         // Envia a resposta com as versões dos pacotes
         res.send({
             ffmpeg_version: ffmpegVersion,
             yt_dlp_version: ytDlpVersion,
-            curl_version: curlVersion
+            curl_version: curlVersion,
+            yt_path:ytpath
         });
     } catch (error) {
         // Caso algum comando falhe
