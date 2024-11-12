@@ -12,7 +12,8 @@ nixpacksPlan = {
             cmds = [
                 "sudo apt update",
                 "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /root/.nix-profile/bin/yt-dlp",
-                "sudo chmod a+rx /root/.nix-profile/bin/yt-dlp"
+                "sudo chmod a+rx /root/.nix-profile/bin/yt-dlp",
+                "sudo chmod +x /root/.nix-profile/bin/yt-dlp"
             ]
         }
     }
