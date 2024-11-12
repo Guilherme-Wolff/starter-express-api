@@ -9,9 +9,9 @@ nixpacksPlan = {
                 "curl"
             ],
             cmds = [
-                "sudo chmod u+w ~/.local/bin/",
-                "sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp",
-                "chmod a+rx ~/.local/bin/yt-dlp"
+                "sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /tmp/yt-dlp",
+                "chmod a+rx /tmp/yt-dlp",
+                "export PATH=/tmp:$PATH"
             ]
         }
     }
