@@ -4,7 +4,9 @@ builder = "NIXPACKS"
 nixpacksPlan = {
     phases = {
         install_deps = {
-            cmds = [],
+            cmds = [
+                "nix-shell -p yt-dlp ffmpeg yt-dlp curl"
+            ],
             nixPkgs = [
                 "ffmpeg",
                 "yt-dlp",
