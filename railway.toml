@@ -12,7 +12,8 @@ nixpacksPlan = {
                 "sudo apt update",
                 "sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /opt/yt-dlp",
                 "sudo chmod a+rx /opt/yt-dlp",
-                "sudo ln -s /opt/yt-dlp /usr/local/bin/yt-dlp"
+                "sudo ln -s /opt/yt-dlp /usr/local/bin/yt-dlp",
+                "export PATH=/usr/local/bin/yt-dlp:PATH"
             ]
         }
     }
