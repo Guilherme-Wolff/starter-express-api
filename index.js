@@ -2,36 +2,41 @@ const express = require('express');
 const { spawn } = require('child_process');
 const app = express();
 
-app.all('/', async (req, res) => {
-    console.log("Received a request!");
+const getVersion = (command, args) => {
+    return new Promise((resolve, reject) => {
+        const sp = spawn(command, args);
 
-    // Função para obter a versão do ffmpeg, yt-dlp ou curl
-    const getVersion = (command, args) => {
-        return new Promise((resolve, reject) => {
-            const sp = spawn(command, args);
+        let output = '';
 
-            let output = '';
+        
 
-            // Captura a saída do comando
-            sp.stdout.on('data', (data) => {
-                output += data.toString();
-            });
-
-            // Captura erros do comando
-            sp.stderr.on('data', (data) => {
-                console.error(`stderr: ${data}`);
-            });
-
-            // Quando o processo terminar
-            sp.on('close', (code) => {
-                if (code === 0) {
-                    resolve(output);  // Resolve com a saída do comando
-                } else {
-                    reject(`Error executing ${command}`);  // Reject com a mensagem de erro
-                }
-            });
+        // Captura a saída do comando
+        sp.stdout.on('data', (data) => {
+            output += data.toString();
         });
-    };
+
+        sp.stdout.on('error', (data) => {
+            output += data.toString();
+        });
+
+        // Captura erros do comando
+        sp.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+        });
+
+        // Quando o processo terminar
+        sp.on('close', (code) => {
+            if (code === 0) {
+                resolve(output);  // Resolve com a saída do comando
+            } else {
+                reject(`Error executing ${command}`);  // Reject com a mensagem de erro
+            }
+        });
+    });
+};
+
+app.all('/', async (req, res) => {
+    console.log("Received a request!")
 
     try {
         // Executa todos os comandos assíncronos
