@@ -10,8 +10,7 @@ nixpacksPlan = {
                 "curl"
             ],
             cmds = [
-                "sudo apt update",
-                "nix-channel --update"
+                "sudo apt update"
             ]
         }
     }
