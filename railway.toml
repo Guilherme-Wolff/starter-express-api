@@ -5,8 +5,8 @@ nixpacksPlan = {
  phases = {
    build = {
      nixPkgs = [
-       "yt-dlp"  # Instala o yt-dlp via Nixpkgs
-       "ffmpeg"  # Instala o ffmpeg via Nixpkgs
+       "yt-dlp",  # Instala o yt-dlp via Nixpkgs
+       "ffmpeg",  # Instala o ffmpeg via Nixpkgs
        "curl"    # Instala o curl via Nixpkgs
      ]
    }
