@@ -10,7 +10,7 @@ nixpacksPlan = {
             ],
             nixPkgs = [
                 "ffmpeg",
-                "curl",
+                "curl"
             ],  
         }
     }
