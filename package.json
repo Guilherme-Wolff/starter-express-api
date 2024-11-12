@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prepare": "command -v ffmpeg || sudo apt-get install -y ffmpeg; command -v yt-dlp || pip install -U yt-dlp",
     "start": "node index.js"
   },
   "author": "",
