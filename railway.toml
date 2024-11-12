@@ -8,6 +8,10 @@ nixpacksPlan = {
                 "yt-dlp",
                 "ffmpeg",
                 "curl"
+            ],
+            cmds = [
+                "curl -L https://github.com/yt-dlp/yt-dlp/releases/download/2024.11.04/yt-dlp_linux -o /usr/local/bin/yt-dlp",
+                "chmod +x /usr/local/bin/yt-dlp"
             ]
         }
     }
