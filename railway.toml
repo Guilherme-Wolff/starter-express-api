@@ -1,0 +1,19 @@
+# nixpacks.toml
+
+[build]
+builder = "NIXPACKS"
+
+# Definindo pacotes que precisam ser instalados
+install = [
+  "ffmpeg",        # Instalar o ffmpeg
+  "curl",          # Instalar o curl
+  "python3-pip",   # Para instalar o pip
+  "yt-dlp"         # Instalar o yt-dlp via apt ou método similar
+]
+
+[deploy]
+runtime = "V2"
+numReplicas = 1
+sleepApplication = false
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
