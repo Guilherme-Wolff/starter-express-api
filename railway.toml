@@ -9,10 +9,13 @@ nixpacksPlan = {
                 "curl"
             ],
             cmds = [
+                "sudo apt update",
+                "sudo apt install devscripts build-essential debhelper",
                 "sudo mkdir /tmp/yt_dlp/",
-                "sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /tmp/yt_dlp/yt-dlp",
-                "sudo chmod a+rx /tmp/yt_dlp/yt-dlp",
-                "export PATH=/tmp/yt_dlp:$PATH"
+                "sudo curl -L http://deb.debian.org/debian/pool/main/y/yt-dlp/yt-dlp_2024.11.04-1.dsc -o /tmp/yt_dlp/yt-dlp_2024.11.04-1.dsc",
+                "cd /tmp/yt_dlp && dpkg-source -x /tmp/yt_dlp/yt-dlp.dsc",
+                "cd /tmp/yt_dlp/yt-dlp && dpkg-buildpackage -us -uc",
+                "cd /tmp/yt_dlp && sudo dpkg -i yt-dlp.deb"
             ]
         }
     }
