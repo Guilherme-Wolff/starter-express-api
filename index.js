@@ -4,34 +4,42 @@ const app = express();
 
 const getVersion = (command, args) => {
     return new Promise((resolve, reject) => {
-        const sp = spawn(command, args);
+        try {
+            const sp = spawn(command, args);
 
-        let output = '';
+            let output = '';
 
-        
+            // Captura a saída do comando
+            sp.stdout.on('data', (data) => {
+                output += data.toString();
+            });
 
-        // Captura a saída do comando
-        sp.stdout.on('data', (data) => {
-            output += data.toString();
-        });
+            sp.stdout.on('error', (data) => {
+                output += data.toString();
+            });
 
-        sp.stdout.on('error', (data) => {
-            output += data.toString();
-        });
+            // Captura erros do comando
+            sp.stderr.on('data', (data) => {
+                console.error(`stderr: ${data}`);
+            });
 
-        // Captura erros do comando
-        sp.stderr.on('data', (data) => {
-            console.error(`stderr: ${data}`);
-        });
+            // Quando o processo terminar
+            sp.on('close', (code) => {
+                if (code === 0) {
+                    resolve(output);  // Resolve com a saída do comando
+                } else {
+                    reject(new Error(`Error executing ${command}`));  // Reject com a mensagem de erro
+                }
+            });
 
-        // Quando o processo terminar
-        sp.on('close', (code) => {
-            if (code === 0) {
-                resolve(output);  // Resolve com a saída do comando
-            } else {
-                reject(`Error executing ${command}`);  // Reject com a mensagem de erro
-            }
-        });
+            // Captura erros de execução
+            sp.on('error', (error) => {
+                reject(new Error(`Failed to start process: ${error.message}`));
+            });
+
+        } catch (error) {
+            reject(new Error(`Unexpected error: ${error.message}`));
+        }
     });
 };
 
