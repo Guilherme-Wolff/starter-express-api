@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "sudo apt install ffmpeg -y && sudo apt install yt-dlp -y && sudo apt install curl -y && node index.js"
+    "start": "apt install ffmpeg -y && apt install yt-dlp -y && apt install curl -y && node index.js"
   },
   "author": "",
   "license": "ISC",
