@@ -3,30 +3,49 @@ const { exec } = require('child_process');
 const app = express();
 
 app.all('/', (req, res) => {
-    console.log("Just got a request!");
+    console.log("Received a request!");
 
-    exec('df -k --output=avail /', (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Exec error: ${error.message}`);
-            return res.status(500).send("Could not retrieve disk usage information.");
-        }
-        if (stderr) {
-            console.error(`Stderr: ${stderr}`);
-            return res.status(500).send("Error retrieving disk usage.");
+    // Executa comandos para verificar a versão do ffmpeg e do yt-dlp
+    exec('ffmpeg -version', (ffmpegError, ffmpegStdout, ffmpegStderr) => {
+        if (ffmpegError || ffmpegStderr) {
+            console.error(`ffmpeg error: ${ffmpegError || ffmpegStderr}`);
+            return res.status(500).send("Could not retrieve ffmpeg version.");
         }
 
-        try {
-            // Pega apenas a segunda linha com o valor disponível em KB
-            const availableKB = parseInt(stdout.trim().split('\n')[1], 10);
-            const availableGB = (availableKB / (1024 ** 2)).toFixed(2); // Convertendo KB para GB
+        // Extrai a primeira linha da saída do ffmpeg (versão)
+        const ffmpegVersion = ffmpegStdout.split('\n')[0];
 
-            res.json({
-                availableDiskSpace: `${availableGB} GB`
+        exec('yt-dlp --version', (ytdlpError, ytdlpStdout, ytdlpStderr) => {
+            if (ytdlpError || ytdlpStderr) {
+                console.error(`yt-dlp error: ${ytdlpError || ytdlpStderr}`);
+                return res.status(500).send("Could not retrieve yt-dlp version.");
+            }
+
+            const ytdlpVersion = ytdlpStdout.trim();
+
+            // Recupera o espaço em disco
+            exec('df -k --output=avail /', (diskError, diskStdout, diskStderr) => {
+                if (diskError || diskStderr) {
+                    console.error(`Disk error: ${diskError || diskStderr}`);
+                    return res.status(500).send("Could not retrieve disk usage information.");
+                }
+
+                try {
+                    const availableKB = parseInt(diskStdout.trim().split('\n')[1], 10);
+                    const availableGB = (availableKB / (1024 ** 2)).toFixed(2); // Convertendo KB para GB
+
+                    // Envia as informações na resposta
+                    res.json({
+                        ffmpegVersion,
+                        ytdlpVersion,
+                        availableDiskSpace: `${availableGB} GB`
+                    });
+                } catch (parseError) {
+                    console.error("Parse error:", parseError);
+                    res.status(500).send("Error parsing disk usage information.");
+                }
             });
-        } catch (parseError) {
-            console.error("Parse error:", parseError);
-            res.status(500).send("Error parsing disk usage information.");
-        }
+        });
     });
 });
 
