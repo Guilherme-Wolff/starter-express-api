@@ -4,8 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-   "postinstall": "npm run install-python-dependencies",
-    "install-python-dependencies": "apt inistall curl",
     "start": "index.js"
   },
   "author": "",
