@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "apt install ffmpeg -y && apt install yt-dlp -y && apt install curl -y && node index.js"
+    "postinstall": "npm run install-dependencies",
+    "install-dependencies": "brew install ffmpeg yt-dlp curl",
+    "start": "index.js"
   },
   "author": "",
   "license": "ISC",
