@@ -1,54 +1,56 @@
 const express = require('express');
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const app = express();
 
-app.all('/', (req, res) => {
+app.all('/', async (req, res) => {
     console.log("Received a request!");
 
-    // Executa comandos para verificar a versão do ffmpeg e do yt-dlp
-    exec('ffmpeg -version', (ffmpegError, ffmpegStdout, ffmpegStderr) => {
-        if (ffmpegError || ffmpegStderr) {
-            console.error(`ffmpeg error: ${ffmpegError || ffmpegStderr}`);
-            return res.status(500).send("Could not retrieve ffmpeg version.");
-        }
+    // Função para obter a versão do ffmpeg, yt-dlp ou curl
+    const getVersion = (command, args) => {
+        return new Promise((resolve, reject) => {
+            const sp = spawn(command, args);
 
-        // Extrai a primeira linha da saída do ffmpeg (versão)
-        const ffmpegVersion = ffmpegStdout.split('\n')[0];
+            let output = '';
 
-        exec('yt-dlp --version', (ytdlpError, ytdlpStdout, ytdlpStderr) => {
-            if (ytdlpError || ytdlpStderr) {
-                console.error(`yt-dlp error: ${ytdlpError || ytdlpStderr}`);
-                return res.status(500).send("Could not retrieve yt-dlp version.");
-            }
+            // Captura a saída do comando
+            sp.stdout.on('data', (data) => {
+                output += data.toString();
+            });
 
-            const ytdlpVersion = ytdlpStdout.trim();
+            // Captura erros do comando
+            sp.stderr.on('data', (data) => {
+                console.error(`stderr: ${data}`);
+            });
 
-            // Recupera o espaço em disco
-            exec('df -k --output=avail /', (diskError, diskStdout, diskStderr) => {
-                if (diskError || diskStderr) {
-                    console.error(`Disk error: ${diskError || diskStderr}`);
-                    return res.status(500).send("Could not retrieve disk usage information.");
-                }
-
-                try {
-                    const availableKB = parseInt(diskStdout.trim().split('\n')[1], 10);
-                    const availableGB = (availableKB / (1024 ** 2)).toFixed(2); // Convertendo KB para GB
-
-                    // Envia as informações na resposta
-                    res.json({
-                        ffmpegVersion,
-                        ytdlpVersion,
-                        availableDiskSpace: `${availableGB} GB`
-                    });
-                } catch (parseError) {
-                    console.error("Parse error:", parseError);
-                    res.status(500).send("Error parsing disk usage information.");
+            // Quando o processo terminar
+            sp.on('close', (code) => {
+                if (code === 0) {
+                    resolve(output);  // Resolve com a saída do comando
+                } else {
+                    reject(`Error executing ${command}`);  // Reject com a mensagem de erro
                 }
             });
         });
-    });
+    };
+
+    try {
+        // Executa todos os comandos assíncronos
+        const ffmpegVersion = await getVersion('ffmpeg', ['-version']);
+        const ytDlpVersion = await getVersion('yt-dlp', ['--version']);
+        const curlVersion = await getVersion('curl', ['--version']);
+
+        // Envia a resposta com as versões dos pacotes
+        res.send({
+            ffmpeg_version: ffmpegVersion,
+            yt_dlp_version: ytDlpVersion,
+            curl_version: curlVersion
+        });
+    } catch (error) {
+        // Caso algum comando falhe
+        res.status(500).send({ error: error });
+    }
 });
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3002, () => {
     console.log("Server is running...");
 });
