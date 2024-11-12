@@ -6,7 +6,7 @@ app.all('/', (req, res) => {
     console.log("Received a request!");
 
     // Executa comandos para verificar a versão do ffmpeg e do yt-dlp
-    exec('ffmpeg -version', (ffmpegError, ffmpegStdout, ffmpegStderr) => {
+    exec('npx ffmpeg -version', (ffmpegError, ffmpegStdout, ffmpegStderr) => {
         if (ffmpegError || ffmpegStderr) {
             console.error(`ffmpeg error: ${ffmpegError || ffmpegStderr}`);
             return res.status(500).send("Could not retrieve ffmpeg version.");
@@ -15,7 +15,7 @@ app.all('/', (req, res) => {
         // Extrai a primeira linha da saída do ffmpeg (versão)
         const ffmpegVersion = ffmpegStdout.split('\n')[0];
 
-        exec('yt-dlp --version', (ytdlpError, ytdlpStdout, ytdlpStderr) => {
+        exec('npx yt-dlp --version', (ytdlpError, ytdlpStdout, ytdlpStderr) => {
             if (ytdlpError || ytdlpStderr) {
                 console.error(`yt-dlp error: ${ytdlpError || ytdlpStderr}`);
                 return res.status(500).send("Could not retrieve yt-dlp version.");
