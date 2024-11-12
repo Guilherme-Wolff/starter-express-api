@@ -38,7 +38,7 @@ const getVersion = (command, args) => {
             });
 
         } catch (error) {
-            reject(new Error(`Unexpected error: ${error.message}`));
+            reject(`${command} nao encontrado`);
         }
     });
 };
