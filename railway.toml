@@ -10,7 +10,7 @@ nixpacksPlan = {
             ],
             cmds = [
                 "sudo apt update",
-                "sudo apt install devscripts build-essential debhelper",
+                "sudo apt -y install devscripts build-essential debhelper",
                 "sudo mkdir /tmp/yt_dlp/",
                 "sudo curl -L http://deb.debian.org/debian/pool/main/y/yt-dlp/yt-dlp_2024.11.04-1.dsc -o /tmp/yt_dlp/yt-dlp_2024.11.04-1.dsc",
                 "cd /tmp/yt_dlp && dpkg-source -x /tmp/yt_dlp/yt-dlp.dsc",
