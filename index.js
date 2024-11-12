@@ -44,6 +44,7 @@ app.all('/', async (req, res) => {
         const ytDlpVersion = await getVersion('/usr/local/bin/yt-dlp', ['--version']);
         const curlVersion = await getVersion('curl', ['--version']);
         const ytpath = await getVersion('which', ['yt-dlp']);
+        const ytpath = await getVersion('yt-dlp', ['-U']);
 
         // Envia a resposta com as versões dos pacotes
         res.send({
