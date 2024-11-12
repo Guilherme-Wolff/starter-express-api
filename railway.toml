@@ -6,7 +6,8 @@ nixpacksPlan = {
         install_deps = {
             nixPkgs = [
                 "ffmpeg",
-                "curl"
+                "curl",
+                "python3"
             ],
             cmds = [
                 "sudo apt update",
