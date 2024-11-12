@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+   "postinstall": "npm run install-python-dependencies",
+    "install-python-dependencies": "brew install curl",
     "start": "index.js"
   },
   "author": "",
@@ -13,8 +15,6 @@
   },
   "homepage": "https://github.com/cyclic-software/starter-express-api#readme",
   "dependencies": {
-    "express": "^4.18.2",
-    "ffmpeg-static":"*",
-    "yt-dlp-exec":"*"
+    "express": "^4.18.2"
   }
 }
