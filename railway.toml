@@ -5,8 +5,8 @@ builder = "NIXPACKS"
 phases = {
   install_deps = {
     nixPkgs = [
-      "yt-dlp"  # Instalar o yt-dlp via Nixpkgs
-      "ffmpeg"  # Instalar o ffmpeg via Nixpkgs
+      "yt-dlp",  # Instalar o yt-dlp via Nixpkgs
+      "ffmpeg",  # Instalar o ffmpeg via Nixpkgs
       "curl"    # Instalar o curl via Nixpkgs
     ]
   }
