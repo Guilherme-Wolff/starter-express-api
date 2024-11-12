@@ -4,17 +4,8 @@ builder = "NIXPACKS"
 nixpacksPlan = {
     phases = {
         install_deps = {
-            cmds = [
-                "sudo apt-get update",
-                "sudo apt-get upgrade -y",
-                "curl -L https://github.com/yt-dlp/yt-dlp/releases/download/2024.11.04/yt-dlp.tar.gz -o /tmp/yt-dlp.tar.gz",
-                "tar -xvzf /tmp/yt-dlp.tar.gz -C /tmp",
-                "mv /tmp/yt-dlp /usr/local/bin/yt-dlp",
-                "chmod +x /usr/local/bin/yt-dlp",
-                "export PATH=/usr/local/bin/yt-dlp:$PATH",
-                "sudo apt-get install -y ffmpeg curl"
-            ],
-            aptPkgs = [
+            nixPkgs = [
+                "yt-dlp",
                 "ffmpeg",
                 "curl"
             ]
