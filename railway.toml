@@ -9,7 +9,10 @@ nixpacksPlan = {
                 "curl"
             ],
             cmds = [
-                "sudo pip install -U yt-dlp"
+                "sudo mkdir /tmp/yt_dlp/",
+                "sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /tmp/yt_dlp/yt-dlp",
+                "chmod a+rx /tmp/yt_dlp/yt-dlp",
+                "export PATH=/tmp/yt_dlp:$PATH"
             ]
         }
     }
