@@ -12,7 +12,7 @@ nixpacksPlan = {
                 "mv /tmp/yt-dlp /usr/local/bin/yt-dlp",
                 "chmod +x /usr/local/bin/yt-dlp",
                 "export PATH=/usr/local/bin/yt-dlp:$PATH",
-                "nix-shell -p yt-dlp ffmpeg curl"
+                "sudo apt-get install yt-dlp ffmpeg curl"
             ],
             aptPkgs = [
                 "ffmpeg",
