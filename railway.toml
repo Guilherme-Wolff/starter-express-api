@@ -12,7 +12,6 @@ nixpacksPlan = {
             nixPkgs = [
                 "ffmpeg",
                 "curl",
-                "yt-dlp
             ],
             
         }
